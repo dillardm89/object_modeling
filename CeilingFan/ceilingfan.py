@@ -1,6 +1,9 @@
-# Create a class for a Ceiling Fan object
+# Create a class to model a Ceiling Fan object
 class CeilingFan:
-    def __init__ (self, status="off", blades=None, bulbs=None, speed=1, direction="counter-clockwise"):
+    def __init__ (self, userName, camelName, id=None, status="off", blades=None, bulbs=None, speed=1, direction="counter-clockwise"):
+        self.userName = userName
+        self.camelName = camelName
+        self.id = id
         self.status = status.lower()
         self.blades = blades
         self.bulbs = bulbs
@@ -10,13 +13,15 @@ class CeilingFan:
         self.setBulbs()
 
 
+    #Return string when print(class object) called
     def __str__(self):
         if (self.status == "off"):
-            return f"This ceiling fan is turned {self.status}. It is equipped with {self.blades} blades and {self.bulbs} light bulbs."
+            return f"{self.id}: Fan named '{self.userName}' is turned {self.status}. It is equipped with {self.blades} blades and {self.bulbs} light bulbs."
         else:
-            return f"This ceiling fan is turned {self.status}. It is equipped with {self.blades} blades and {self.bulbs} light bulbs. It is currently moving in {self.direction} direction at speed level {self.speed}."
+            return f"{self.id}: Fan named '{self.userName}' is turned {self.status}. It is equipped with {self.blades} blades and {self.bulbs} light bulbs. It is currently moving in {self.direction} direction at speed level {self.speed}."
 
 
+    #Function to set number of fan blades
     def setBlades(self):
         if (self.blades != None):
             return
@@ -30,6 +35,7 @@ class CeilingFan:
             self.blades = int(numBlades)
 
 
+    #Function to set number of light bulbs
     def setBulbs(self):
         if (self.bulbs != None):
             return
@@ -43,8 +49,11 @@ class CeilingFan:
             self.bulbs = int(numBulbs)
 
 
+    #Function to change fan status (on/off)
     def changeStatus(self):
         oldStatus = self.status
+        
+        print(f"The fan is currently turned {self.status}.")
         
         if (oldStatus == "off"):
             choice = input("Do you wish to turn the fan on? (Y / N) ")
@@ -54,6 +63,7 @@ class CeilingFan:
 
             if (choice.upper() == "Y"):
                 self.status = "on"
+                print("The fan is now turned on.")
             else:
                 print("The fan will remain off.")
 
@@ -65,9 +75,12 @@ class CeilingFan:
 
             if (choice.upper() == "Y"):
                 self.status = "off"
+                print("The fan is now turned off.")
             else:
                 print("The fan will remain on.")
 
+
+    #Function to change fan speed setting (1-3)
     def changeSpeed(self):
         if (self.status == "off"):
             print("The ceiling fan is currently turned off. It must be on to change the speed.")
@@ -100,14 +113,15 @@ class CeilingFan:
                     newSpeed = input("Enter the new speed setting from 1-3: ")
 
                 if (oldSpeed == newSpeed):
-                    print(f"The ceiling fan is already set to speed level {self.speed}.")
+                    print(f"The fan is already set to speed level {self.speed}.")
                 else:
                     self.speed = int(newSpeed)
-                    print(f"The ceiling fan is now set to speed level {self.speed}.")
+                    print(f"The fan is now set to speed level {self.speed}.")
             else:
-                print(f"The ceiling fan remains at speed level {self.speed}.")
+                print(f"The fan remains at speed level {self.speed}.")
 
 
+    #Function to change fan direction setting (clockwise / counter-clockwise)
     def changeDirection(self):
         if (self.status == "off"):
             print("The ceiling fan is currently turned off. It must be on to change the direction.")
@@ -148,22 +162,8 @@ class CeilingFan:
                 self.direction = newDirection.lower()
 
                 if (oldDirection == self.direction):
-                    print(f"The ceiling fan is already set to {self.direction} direction.")
+                    print(f"The fan is already set to {self.direction} direction.")
                 else:
-                    print(f"The ceiling fan is now set to {self.direction} direction.")
-        
-
-if __name__ == "__main__":
-    # Create new instance of CeilingFan
-    bedroomFan = CeilingFan("off")
-
-    #Print return string for new instance
-    print(bedroomFan)
-
-    #Call methods to modify instance
-    bedroomFan.changeStatus()
-    bedroomFan.changeSpeed()
-    bedroomFan.changeDirection()
-
-    #Print return string for updated instance
-    print(bedroomFan)
+                    print(f"The fan is now set to {self.direction} direction.")
+            else:
+                print(f"The fan will remain set to {self.direction} direction.")
