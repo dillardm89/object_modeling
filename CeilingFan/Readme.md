@@ -1,1 +1,0 @@
-Run fanprogram.py file as script to begin CeilingFan program
