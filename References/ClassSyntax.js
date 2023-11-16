@@ -1,4 +1,4 @@
-//#Create a class to model an object
+//Create a class to model an object
 class Example {
     constructor (param1, param2) {
         this.param1 = param1;
