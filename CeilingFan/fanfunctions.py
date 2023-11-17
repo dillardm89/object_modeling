@@ -14,9 +14,11 @@ MY_FANS = [
 def create_fan():
     user_fan_string = input("Enter a name for the new fan (ex: bedroom fan): ")
 
-    while user_fan_string[0] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"):
+    while user_fan_string[0] in ("0", "1", "2", "3", "4", "5",
+                                 "6", "7", "8", "9"):
         print("The fan name must start with a letter (not a number).")
-        user_fan_string = input("Please enter a valid name for the new fan (ex: upstairs fan): ")
+        user_fan_string = input("Please enter a valid name for the new fan " +
+                                "(ex: upstairs fan): ")
 
     new_fan = CeilingFan(user_fan_string)
 
