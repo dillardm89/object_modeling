@@ -38,10 +38,12 @@ def main_menu():
         print("Below is the current fan list.")
         fan_id_list = create_fan_list()
 
-        choice = input("Would you like to view details for a specific fan? (Y / N) ")
+        choice = input("Would you like to view details for a " +
+                       "specific fan? (Y / N) ")
         while choice.upper() not in ("Y", "N"):
             print("Please enter a valid selection.")
-            choice = input("Would you like to view details for a specific fan? (Y / N) ")
+            choice = input("Would you like to view details for a " +
+                           "specific fan? (Y / N) ")
 
         if choice.upper() == "N":
             return_to_menu()
