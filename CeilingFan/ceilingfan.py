@@ -1,3 +1,11 @@
+from userinput import validate_type_is_int
+from userinput import validate_type_is_str
+from userinput import change_status_input
+from userinput import change_speed_input
+from userinput import change_direction_input
+from usermessages import return_success_msg
+
+
 # Create a class to model a Ceiling Fan object
 class CeilingFan:
     def __init__(
@@ -16,7 +24,7 @@ class CeilingFan:
 
     # Return string when print(class object) called
     def __str__(self):
-        if (self.status == "off"):
+        if self.status == "off":
             return f"{self.id}: Fan named '{self.user_name}' is turned " +\
                 f"{self.status}. It is equipped with {self.blades} blades " +\
                 f"and {self.bulbs} light bulbs."
@@ -29,11 +37,10 @@ class CeilingFan:
     # Function to set number of fan blades
     def set_blades(self):
         if self.blades is None:
-            numBlades = input("How many blades does your " +
-                              "ceiling fan have? (3-6) ")
-
-            while numBlades not in ("3", "4", "5", "6"):
-                print("Please enter a valid number selection.")
+            numBlades = 0
+            valid_input_type = False
+            while (valid_input_type is not True and
+                   numBlades not in ("3", "4", "5", "6")):
                 numBlades = input("How many blades does your " +
                                   "ceiling fan have? (3-6) ")
 
@@ -44,11 +51,10 @@ class CeilingFan:
     # Function to set number of light bulbs
     def set_bulbs(self):
         if self.bulbs is None:
-            numBulbs = input("How many light bulbs does your " +
-                             "ceiling fan have? (1-5) ")
-
-            while numBulbs not in ("1", "2", "3", "4", "5"):
-                print("Please enter a valid number selection.")
+            numBulbs = 0
+            valid_input_type = False
+            while (valid_input_type is not True and
+                   numBulbs not in ("1", "2", "3", "4", "5")):
                 numBulbs = input("How many light bulbs does your " +
                                  "ceiling fan have? (1-5) ")
 
@@ -59,130 +65,97 @@ class CeilingFan:
     # Function to change fan status (on/off)
     def change_status(self):
         old_status = self.status
-
         print(f"The fan is currently turned {self.status}.")
 
-        if (old_status == "off"):
-            choice = input("Do you wish to turn the fan on? (Y / N) ")
-            while choice.upper() not in ("Y", "N"):
-                print("Please enter a valid selection.")
-                choice = input("Do you wish to turn the fan on? (Y / N) ")
-
-            if (choice.upper() == "Y"):
-                self.status = "on"
-                print("The fan is now turned on.")
-            else:
-                print("The fan will remain off.")
-
+        if old_status == "off":
+            proposed_staus = "on"
         else:
-            choice = input("Do you wish to turn the fan off? (Y / N) ")
-            while choice.upper() not in ("Y", "N"):
-                print("Please enter a valid selection.")
-                choice = input("Do you wish to turn the fan on? (Y / N) ")
+            proposed_staus = "off"
 
-            if (choice.upper() == "Y"):
-                self.status = "off"
-                print("The fan is now turned off.")
-            else:
-                print("The fan will remain on.")
+        choice = ""
+        valid_input_type = False
+        while (valid_input_type is not True and
+               choice.upper() not in ("Y", "N")):
+            choice = input("Do you wish to turn the fan " +
+                           f"{proposed_staus}? (Y / N) ")
+            valid_input_type = validate_type_is_str(choice)
+
+        if (choice.upper() == "Y"):
+            self.status = proposed_staus
+            action_type = f"turned {proposed_staus}"
+            return_success_msg(self.user_name, action_type)
+        else:
+            print(f"Fan named {self.user_name} remained turned {self.status}.")
 
     # Function to change fan speed setting (1-3)
     def change_speed(self):
         if (self.status == "off"):
-            print("The ceiling fan is currently turned off. " +
-                  "It must be on to change the speed.")
-            status_choice = input("Do you wish to turn the fan on? (Y / N) ")
+            change_type = "speed"
+            status = change_status_input(self.status, self.user_name,
+                                         change_type)
 
-            while status_choice.upper() not in ("Y", "N"):
-                print("Please enter a valid selection.")
-                status_choice = input("Do you wish to turn the " +
-                                      "fan on? (Y / N) ")
+            if status == "off":
+                return
 
-            if (status_choice.upper() == "Y"):
-                self.status = "on"
-                self.change_speed()
-            else:
-                print("The fan will remain off.")
+        old_speed = self.speed
+        print(f"The fan is currently at speed level {self.speed}.")
+        choice = change_speed_input()
 
-        else:
-            old_speed = self.speed
-            print(f"The ceiling fan is currently at speed level {self.speed}.")
-            choice = input("Do you wish to change the speed setting? (Y / N) ")
-
-            while choice.upper() not in ("Y", "N"):
-                print("Please enter a valid selection.")
-                choice = input("Do you wish to change the " +
-                               "speed setting? (Y / N) ")
-
-            if (choice.upper() == "Y"):
+        if (choice.upper() == "Y"):
+            new_speed = 0
+            speed_input_type = False
+            while (speed_input_type is not True and
+                   int(new_speed) < 1 or int(new_speed) > 3):
                 new_speed = input("Enter the new speed setting from 1-3: ")
+                speed_input_type = validate_type_is_int(new_speed)
 
-                while new_speed.upper() not in ("1", "2", "3"):
-                    print("Please enter a valid number selection.")
-                    new_speed = input("Enter the new speed setting from 1-3: ")
-
-                if (old_speed == new_speed):
-                    print("The fan is already set to speed " +
-                          f"level {self.speed}.")
-                else:
-                    self.speed = int(new_speed)
-                    print(f"The fan is now set to speed level {self.speed}.")
+            if (old_speed == new_speed):
+                print("The fan is already set to speed " +
+                      f"level {self.speed}.")
             else:
-                print(f"The fan remains at speed level {self.speed}.")
+                self.speed = int(new_speed)
+                action_type = f"changed to speed level {self.speed}"
+                return_success_msg(self.user_name, action_type)
+        else:
+            print(f"The fan named {self.user_name} remains " +
+                  "at speed level {self.speed}.")
 
     # Function to change fan direction setting (clockwise / counter-clockwise)
     def change_direction(self):
         if (self.status == "off"):
-            print("The ceiling fan is currently turned off. " +
-                  "It must be on to change the direction.")
-            direction_choice = input("Do you wish to turn the fan " +
-                                     "on? (Y / N) ")
+            change_type = "direction"
+            status = change_status_input(self.status, self.user_name,
+                                         change_type)
 
-            while direction_choice.upper() not in ("Y", "N"):
-                print("Please enter a valid selection.")
-                direction_choice = input("Do you wish to turn " +
-                                         "the fan on? (Y / N) ")
+            if status == "off":
+                return
 
-            if (direction_choice.upper() == "Y"):
-                self.status = "on"
-                self.changeDirection()
-            else:
-                print("The fan will remain off.")
+        old_direction = self.direction
+        print("The ceiling fan is currently set " +
+              f"to {self.direction} direction.")
 
+        if (self.direction == "clockwise"):
+            print("This is the ideal winter direction setting.")
         else:
-            old_direction = self.direction
-            print("The ceiling fan is currently set " +
-                  f"to {self.direction} direction.")
+            print("This is the ideal summer direction setting.")
 
-            if (self.direction == "clockwise"):
-                print("This is the ideal winter direction setting.")
-            else:
-                print("This is the ideal summer direction setting.")
-
-            choice = input("Do you wish to change the direction " +
-                           "setting? (Y / N) ")
-
-            while choice.upper() not in ("Y", "N"):
-                print("Please enter a valid selection.")
-                choice = input("Do you wish to change the direction " +
-                               "setting? (Y / N) ")
-
-            if (choice.upper() == "Y"):
+        choice = change_direction_input()
+        if (choice.upper() == "Y"):
+            new_direction = ""
+            valid_input_type = False
+            while (valid_input_type is not True and new_direction.lower()
+                   not in ("clockwise", "counter-clockwise")):
                 new_direction = input("Enter the new direction setting: " +
                                       "(clockwise or counter-clockwise) ")
+                valid_input_type = validate_type_is_str(new_direction)
 
-                while new_direction.lower() not in ("clockwise",
-                                                    "counter-clockwise"):
-                    print("Please enter a valid selection.")
-                    new_direction = input("Enter the new direction setting: " +
-                                          "(clockwise or counter-clockwise) ")
-
-                self.direction = new_direction.lower()
-
-                if (old_direction == self.direction):
-                    print("The fan is already set to " +
-                          f"{self.direction} direction.")
-                else:
-                    print(f"The fan is now set to {self.direction} direction.")
+            if (old_direction == self.direction):
+                print("The fan is already set to " +
+                      f"{self.direction} direction.")
             else:
-                print(f"The fan remains set to {self.direction} direction.")
+                self.direction = new_direction.lower()
+                action_type = f"changed to direction setting: {self.direction}"
+                return_success_msg(self.user_name, action_type)
+        else:
+            print(f"The fan named {self.user_name} remains " +
+                  "at direction setting: {self.direction}.")
