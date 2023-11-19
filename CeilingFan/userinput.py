@@ -1,5 +1,4 @@
-from validation import validate_type_is_int
-from validation import validate_type_is_str
+from validation import (validate_type_is_int, validate_type_is_str)
 
 
 # Function to collect user input for selecting specific fan

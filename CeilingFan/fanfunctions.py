@@ -1,7 +1,7 @@
 from ceilingfan import CeilingFan
-from userfunctions import select_new_status
-from userfunctions import select_new_speed
-from userfunctions import select_new_direction
+from useractions import (select_new_status, select_new_direction,
+                         select_new_speed)
+
 
 # Create list for class objects with example fans
 MY_FANS = [

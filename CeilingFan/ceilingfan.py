@@ -1,5 +1,4 @@
-from userfunctions import change_num_blades
-from userfunctions import change_num_bulbs
+from useractions import (change_num_blades, change_num_bulbs)
 
 
 # Create a class to model a Ceiling Fan object

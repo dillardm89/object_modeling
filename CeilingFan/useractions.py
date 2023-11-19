@@ -1,8 +1,6 @@
-from validation import validate_type_is_int
-from validation import validate_type_is_str
-from userinput import change_status_input
-from userinput import change_speed_input
-from userinput import change_direction_input
+from validation import (validate_type_is_int, validate_type_is_str)
+from userinput import (change_status_input, change_direction_input,
+                       change_speed_input)
 from usermessage import return_success_msg
 
 
