@@ -5,14 +5,15 @@ from fanfunctions import delete_fan
 from fanfunctions import update_fan_id
 from fanfunctions import view_fan_details
 from fanfunctions import create_fan_list
+from fanfunctions import modify_fan
 from fanfunctions import MY_FANS
-from userfunctions import menu_input
 from userfunctions import user_name_fan
-from userfunctions import view_details_input
-from userfunctions import select_fan_by_id
-from userfunctions import modify_fan_input
-from userfunctions import modify_fan_choice
-from userfunctions import return_success_msg
+from usermessage import return_success_msg
+from userinput import menu_input
+from userinput import modify_fan_choice
+from userinput import select_fan_by_id
+from userinput import view_details_input
+from userinput import modify_fan_input
 
 
 # Function to create main menu
@@ -33,7 +34,10 @@ def main_menu():
 
     # Delete existing fan
     elif selection == 2:
-        create_fan_list()
+        num_fans = create_fan_list()
+        if num_fans < 1:
+            return_to_menu()
+
         action_type = "delete"
         fan_id = select_fan_by_id(action_type, len(MY_FANS))
         fan_name_delete = delete_fan(fan_id)
@@ -41,9 +45,12 @@ def main_menu():
         return_success_msg(fan_name_delete, f"{action_type}d")
         return_to_menu()
 
-    # View list of fans and/or view specific fan details then option to modify
+    # View list of fans or view specific fan details then option to modify
     elif selection in (3, 4):
-        create_fan_list()
+        num_fans = create_fan_list()
+        if num_fans < 1:
+            return_to_menu()
+
         action_type = "view specific details"
 
         if selection == 3:
@@ -53,16 +60,29 @@ def main_menu():
 
         fan_id = select_fan_by_id(action_type, len(MY_FANS))
         view_fan_details(fan_id)
-        modify_fan_input(fan_id)
-        return_to_menu()
+        selection = modify_fan_input(fan_id)
+
+        if selection == -1:
+            return_to_menu()
+        else:
+            modify_fan(selection, fan_id)
+            return_to_menu()
 
     # Modify fan (change status, speed, direction)
     elif selection == 5:
-        create_fan_list()
+        num_fans = create_fan_list()
+        if num_fans < 1:
+            return_to_menu()
+
         action_type = "modify"
         fan_id = select_fan_by_id(action_type, len(MY_FANS))
-        modify_fan_choice(fan_id)
-        return_to_menu()
+        selection = modify_fan_choice(fan_id)
+
+        if selection == -1:
+            return_to_menu()
+        else:
+            modify_fan(selection, fan_id)
+            return_to_menu()
 
     # Exit program
     else:

@@ -31,10 +31,15 @@ def delete_fan(fan_id):
 
 # Function to generate fan list with ID and user inputted name
 def create_fan_list():
-    print("Below is the current fan list.")
+    if len(MY_FANS) == 0:
+        print("There are no fans to view. Try creating new fans first.")
+        return -1
+    else:
+        print("Below is the current fan list.")
 
-    for fan in MY_FANS:
-        print(f"{fan.id}: {fan.name}")
+        for fan in MY_FANS:
+            print(f"{fan.id}: {fan.name}")
+        return len(MY_FANS)
 
 
 # Function to update fan id's after delete performed
@@ -50,9 +55,19 @@ def view_fan_details(fan_id):
     print(MY_FANS[fan_id - 1])
 
 
+# Function to handle modify fan options
+def modify_fan(selection, fan_id):
+    if selection == 1:
+        modify_fan_status(fan_id)
+    elif selection == 2:
+        modify_fan_speed(fan_id)
+    else:
+        modify_fan_direction(fan_id)
+
+
 # Function to modify fan status
 def modify_fan_status(fan_id):
-    fan_details = MY_FANS[fan_id - 1].get_fan_details
+    fan_details = MY_FANS[fan_id - 1].get_fan_details()
     current_status = fan_details[0]
     fan_name = fan_details[3]
 
@@ -62,7 +77,7 @@ def modify_fan_status(fan_id):
 
 # Function to modify fan speed
 def modify_fan_speed(fan_id):
-    fan_details = MY_FANS[fan_id - 1].get_fan_details
+    fan_details = MY_FANS[fan_id - 1].get_fan_details()
     current_status = fan_details[0]
     current_speed = fan_details[1]
     fan_name = fan_details[3]
@@ -78,7 +93,7 @@ def modify_fan_speed(fan_id):
 
 # Function to modify fan direction
 def modify_fan_direction(fan_id):
-    selected_fan_details = MY_FANS[fan_id - 1].get_fan_details
+    selected_fan_details = MY_FANS[fan_id - 1].get_fan_details()
     current_status = selected_fan_details[0]
     current_direction = selected_fan_details[2]
     fan_name = selected_fan_details[3]
