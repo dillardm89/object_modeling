@@ -1,12 +1,12 @@
 import sys
 import time
-from fanfunctions import create_fan
-from fanfunctions import display_fans_by_id
-from fanfunctions import delete_fan
-from fanfunctions import create_fan_list
-from fanfunctions import select_fan_by_id
-from fanfunctions import view_fan_details
-from fanfunctions import modify_fan_choice
+from fanfunctions import (create_fan, delete_fan, update_fan_id,
+                          view_fan_details, create_fan_list,
+                          modify_fan, MY_FANS)
+from usermessage import return_success_msg
+from useractions import user_name_fan
+from userinput import (menu_input, modify_fan_choice,
+                       select_fan_by_id, view_details_input, modify_fan_input)
 
 
 # Function to create main menu
@@ -15,54 +15,67 @@ def main_menu():
         "existing fan\n3: View list of fans\n4: View specific fan details\n" +\
         "5: Modify fan (change status, speed, direction)\n6: Exit program"
     print(menu_text)
-
-    selection = input("Enter the operation number: ")
-
-    while selection not in ("1", "2", "3", "4", "5", "6"):
-        print("Please enter a valid number selection.")
-        selection = input("Enter a valid operation number: ")
+    selection = menu_input()
 
     # Create new fan
-    if selection == "1":
-        create_fan()
+    if selection == 1:
+        fan_name_create = user_name_fan()
+        create_fan(fan_name_create)
+        action_type = "created"
+        return_success_msg(fan_name_create, action_type)
         return_to_menu()
 
     # Delete existing fan
-    elif selection == "2":
-        fan_id = display_fans_by_id(selection)
-        delete_fan(fan_id)
+    elif selection == 2:
+        num_fans = create_fan_list()
+        if num_fans < 1:
+            return_to_menu()
+
+        action_type = "delete"
+        fan_id = select_fan_by_id(action_type, len(MY_FANS))
+        fan_name_delete = delete_fan(fan_id)
+        update_fan_id(fan_id)
+        return_success_msg(fan_name_delete, f"{action_type}d")
         return_to_menu()
 
-    # View list of fans
-    elif selection == "3":
-        print("Below is the current fan list.")
-        fan_id_list = create_fan_list()
+    # View list of fans or view specific fan details then option to modify
+    elif selection in (3, 4):
+        num_fans = create_fan_list()
+        if num_fans < 1:
+            return_to_menu()
 
-        choice = input("Would you like to view details for a " +
-                       "specific fan? (Y / N) ")
-        while choice.upper() not in ("Y", "N"):
-            print("Please enter a valid selection.")
-            choice = input("Would you like to view details for a " +
-                           "specific fan? (Y / N) ")
+        action_type = "view specific details"
 
-        if choice.upper() == "N":
+        if selection == 3:
+            choice = view_details_input()
+            if choice == "N":
+                return_to_menu()
+
+        fan_id = select_fan_by_id(action_type, len(MY_FANS))
+        view_fan_details(fan_id)
+        selection = modify_fan_input(fan_id)
+
+        if selection == -1:
             return_to_menu()
         else:
-            fan_id = select_fan_by_id(selection, fan_id_list)
-            view_fan_details(fan_id)
+            modify_fan(selection, fan_id)
             return_to_menu()
 
-    # View specific fan details
-    elif selection == "4":
-        fan_id = display_fans_by_id(selection)
-        view_fan_details(fan_id)
-        return_to_menu()
-
     # Modify fan (change status, speed, direction)
-    elif selection == "5":
-        fan_id = display_fans_by_id(selection)
-        modify_fan_choice(fan_id)
-        return_to_menu()
+    elif selection == 5:
+        num_fans = create_fan_list()
+        if num_fans < 1:
+            return_to_menu()
+
+        action_type = "modify"
+        fan_id = select_fan_by_id(action_type, len(MY_FANS))
+        selection = modify_fan_choice(fan_id)
+
+        if selection == -1:
+            return_to_menu()
+        else:
+            modify_fan(selection, fan_id)
+            return_to_menu()
 
     # Exit program
     else:
