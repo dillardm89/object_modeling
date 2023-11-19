@@ -7,8 +7,8 @@ from fanfunctions import view_fan_details
 from fanfunctions import create_fan_list
 from fanfunctions import modify_fan
 from fanfunctions import MY_FANS
-from userfunctions import user_name_fan
 from usermessage import return_success_msg
+from useractions import user_name_fan
 from userinput import menu_input
 from userinput import modify_fan_choice
 from userinput import select_fan_by_id
