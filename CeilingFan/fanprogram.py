@@ -4,9 +4,10 @@ from fanfunctions import (create_fan, delete_fan, update_fan_id,
                           view_fan_details, create_fan_list,
                           modify_fan, MY_FANS)
 from usermessage import return_success_msg
-from useractions import user_name_fan
-from userinput import (menu_input, modify_fan_choice,
-                       select_fan_by_id, view_details_input, modify_fan_input)
+from usernewfaninput import user_name_fan
+from usermenuinput import (menu_input, modify_fan_menu)
+from useroptioninput import (view_details_input, modify_fan_input)
+from userselectactions import select_fan_by_id
 
 
 # Function to create main menu
@@ -47,18 +48,18 @@ def main_menu():
         action_type = "view specific details"
 
         if selection == 3:
-            choice = view_details_input()
-            if choice == "N":
+            view_details_choice = view_details_input()
+            if view_details_choice == "N":
                 return_to_menu()
 
         fan_id = select_fan_by_id(action_type, len(MY_FANS))
         view_fan_details(fan_id)
-        selection = modify_fan_input()
+        modify_fan_decision = modify_fan_input()
 
-        if selection == -1:
+        if modify_fan_decision == -1:
             return_to_menu()
         else:
-            modify_fan(selection, fan_id)
+            modify_fan(modify_fan_decision, fan_id)
             return_to_menu()
 
     # Modify fan (change status, speed, direction)
@@ -69,7 +70,7 @@ def main_menu():
 
         action_type = "modify"
         fan_id = select_fan_by_id(action_type, len(MY_FANS))
-        selection = modify_fan_choice()
+        selection = modify_fan_menu()
 
         if selection == -1:
             return_to_menu()

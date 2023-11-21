@@ -1,4 +1,4 @@
-from useractions import (change_num_blades, change_num_bulbs)
+from usernewfaninput import (change_num_blades, change_num_bulbs)
 from fanprintstatus import get_fan_status_statement
 
 

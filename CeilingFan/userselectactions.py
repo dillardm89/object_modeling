@@ -1,18 +1,21 @@
-from validation import (validate_type_is_int, validate_type_is_str)
-from userinput import (change_fan_status_input, change_setting_input,
-                       change_light_status_input)
+from validation import validate_type_is_int
+from useroptioninput import (change_setting_input, new_light_setting_input,
+                             new_speed_setting_input,
+                             new_direction_setting_input)
+from userstatusinput import (change_fan_status_input, change_status_input,
+                             change_light_status_input)
 from usermessage import return_success_msg
 
 
-# Function for user input to name fan
-def user_name_fan():
-    user_fan_string = input("Enter a name for the new fan (ex: bedroom fan): ")
+# Function to collect user input for selecting specific fan
+def select_fan_by_id(action_type, fans_len):
+    fan_id = -1
+    valid_input_type = False
+    while not valid_input_type or int(fan_id) < 1 or int(fan_id) > fans_len:
+        fan_id = input(f"Enter fan ID to {action_type}: ")
+        valid_input_type = validate_type_is_int(fan_id)
 
-    while user_fan_string[0].isdigit():
-        print("The fan name must start with a letter (not a number).")
-        user_fan_string = input("Please enter a valid name for the new fan: ")
-
-    return user_fan_string
+    return int(fan_id)
 
 
 # Function for user to select new fan status
@@ -26,14 +29,10 @@ def select_new_fan_status(current_fan_status, current_speed, fan_name):
         proposed_fan_status = "off"
         proposed_speed = 0
 
-    status_choice = ""
-    valid_input_type = False
-    while not valid_input_type or status_choice.upper() not in ("Y", "N"):
-        status_choice = input("Do you wish to turn the fan " +
-                              f"{proposed_fan_status}? (Y / N) ")
-        valid_input_type = validate_type_is_str(status_choice)
+    status_type = "fan"
+    status_choice = change_status_input(status_type, proposed_fan_status)
 
-    if status_choice.upper() == "Y":
+    if status_choice == "Y":
         new_fan_status = proposed_fan_status
         mode = "Fan"
         action_type = f"turned {proposed_fan_status}"
@@ -56,14 +55,10 @@ def select_new_light_status(current_light_status,
         proposed_light_status = "off"
         proposed_light_setting = 0
 
-    status_choice = ""
-    valid_input_type = False
-    while not valid_input_type or status_choice.upper() not in ("Y", "N"):
-        status_choice = input("Do you wish to turn the light " +
-                              f"{proposed_light_status}? (Y / N) ")
-        valid_input_type = validate_type_is_str(status_choice)
+    status_type = "light"
+    status_choice = change_status_input(status_type, proposed_light_status)
 
-    if status_choice.upper() == "Y":
+    if status_choice == "Y":
         new_light_status = proposed_light_status
         mode = "Light for fan"
         action_type = f"turned {proposed_light_status}"
@@ -95,18 +90,12 @@ def select_new_light_setting(current_light_status,
               f"at setting level {light_setting}.")
         return light_status, light_setting
 
-    new_setting = -1
-    setting_input_type = False
-    while (setting_input_type is not True or
-            int(new_setting) < 1 or int(new_setting) > 5):
-        new_setting = input("Enter the new light setting: (1-5) ")
-        setting_input_type = validate_type_is_int(new_setting)
-
-    if light_setting == int(new_setting):
+    light_setting_choice = new_light_setting_input()
+    if light_setting == light_setting_choice:
         print(f"The light is already set to evel {light_setting}.")
         return light_status, light_setting
     else:
-        new_setting = int(new_setting)
+        new_setting = light_setting_choice
         mode = "Light for fan"
         action_type = f"changed to speed level {new_setting}"
         return_success_msg(mode, fan_name, action_type)
@@ -134,18 +123,12 @@ def select_new_speed(current_fan_status, current_speed, fan_name):
               f"at speed level {speed}.")
         return fan_status, speed
 
-    new_speed = -1
-    speed_input_type = False
-    while (speed_input_type is not True or
-            int(new_speed) < 1 or int(new_speed) > 3):
-        new_speed = input("Enter the new speed setting: (1-3) ")
-        speed_input_type = validate_type_is_int(new_speed)
-
-    if speed == int(new_speed):
+    new_speed_choice = new_speed_setting_input()
+    if speed == int(new_speed_choice):
         print(f"The fan is already set to speed level {speed}.")
         return fan_status, speed
     else:
-        new_speed = int(new_speed)
+        new_speed = int(new_speed_choice)
         mode = "Fan"
         action_type = f"changed to speed level {new_speed}"
         return_success_msg(mode, fan_name, action_type)
@@ -179,44 +162,13 @@ def select_new_direction(current_fan_status, current_speed, current_direction,
               f"setting: {current_direction}.")
         return fan_status, current_direction, speed
 
-    new_direction = ""
-    direction_input_type = False
-    while (not direction_input_type or
-           new_direction.lower() not in ("clockwise", "counter-clockwise")):
-        new_direction = input("Enter the new direction setting: " +
-                              "(clockwise or counter-clockwise) ")
-        direction_input_type = validate_type_is_str(new_direction)
-
-    if current_direction == new_direction.lower():
+    new_direction_choice = new_direction_setting_input()
+    if current_direction == new_direction_choice:
         print(f"The fan is already set to {current_direction} direction.")
         return fan_status, current_direction, speed
     else:
-        new_direction = new_direction.lower()
+        new_direction = new_direction_choice
         mode = "Fan"
         action_type = f"changed to direction setting: {new_direction}"
         return_success_msg(mode, fan_name, action_type)
         return fan_status, new_direction, speed
-
-
-# Function for user to set number of fan blades
-def change_num_blades():
-    num_blades = 0
-    valid_input_type = False
-    while not valid_input_type or int(num_blades) < 3 or int(num_blades) > 6:
-        num_blades = input("How many blades does your " +
-                           "ceiling fan have? (3-6) ")
-        valid_input_type = validate_type_is_int(num_blades)
-
-    return int(num_blades)
-
-
-# Function for user to set number of fan light bulbs
-def change_num_bulbs():
-    num_bulbs = 0
-    valid_input_type = False
-    while not valid_input_type or int(num_bulbs) < 1 or int(num_bulbs) > 5:
-        num_bulbs = input("How many light bulbs does your " +
-                          "ceiling fan have? (1-5) ")
-        valid_input_type = validate_type_is_int(num_bulbs)
-
-    return int(num_bulbs)

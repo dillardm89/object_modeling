@@ -1,7 +1,7 @@
 from ceilingfan import CeilingFan
-from useractions import (select_new_fan_status, select_new_direction,
-                         select_new_speed, select_new_light_status,
-                         select_new_light_setting)
+from userselectactions import (select_new_fan_status, select_new_direction,
+                               select_new_speed, select_new_light_status,
+                               select_new_light_setting)
 
 
 # Create list for class objects with example fans
@@ -37,7 +37,7 @@ def delete_fan(fan_id):
 def create_fan_list():
     if len(MY_FANS) == 0:
         print("There are no fans to view. Try creating new fans first.")
-        return -1
+        return 0
     else:
         print("Below is the current fan list.")
 
