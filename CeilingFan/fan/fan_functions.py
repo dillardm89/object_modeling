@@ -1,5 +1,5 @@
-from ceilingfan import CeilingFan
-from ..user.userselectactions import (select_new_fan_status, select_new_direction,
+from ceiling_fan import CeilingFan
+from ..user.user_select_actions import (select_new_fan_status, select_new_direction,
                                select_new_speed, select_new_light_status,
                                select_new_light_setting)
 

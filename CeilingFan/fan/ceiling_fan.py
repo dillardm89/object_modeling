@@ -1,5 +1,5 @@
-from ..user.usernewfaninput import (change_num_blades, change_num_bulbs)
-from fanprintstatus import get_fan_status_statement
+from ..user.user_new_fan_input import (change_num_blades, change_num_bulbs)
+from fan_print_status import get_fan_status_statement
 
 
 # Create a class to model a Ceiling Fan object

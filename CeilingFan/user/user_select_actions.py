@@ -1,10 +1,10 @@
 from validation import validate_type_is_int
-from useroptioninput import (change_setting_options, new_light_setting_options,
+from user_option_input import (change_setting_options, new_light_setting_options,
                              new_speed_setting_options,
                              new_direction_setting_options)
-from userstatusinput import (change_fan_status_input, change_status_input,
+from user_status_input import (change_fan_status_input, change_status_input,
                              change_light_status_input)
-from usermessage import return_success_msg
+from user_message import return_success_msg
 
 
 # Function to collect user input for selecting specific fan

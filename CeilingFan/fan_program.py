@@ -1,13 +1,13 @@
 import sys
 import time
-from .fan.fanfunctions import (create_fan, delete_fan, update_fan_id,
+from .fan.fan_functions import (create_fan, delete_fan, update_fan_id,
                           view_fan_details, create_fan_list,
                           modify_fan, MY_FANS)
-from .user.usermessage import return_success_msg
-from .user.usernewfaninput import user_name_fan
-from .user.usermenuinput import (menu_input, modify_fan_menu)
-from .user.useroptioninput import (view_details_options, modify_fan_options)
-from .user.userselectactions import select_fan_by_id
+from .user.user_message import return_success_msg
+from .user.user_new_fan_input import user_name_fan
+from .user.user_menu_input import (menu_input, modify_fan_menu)
+from .user.user_option_input import (view_details_options, modify_fan_options)
+from .user.user_select_actions import select_fan_by_id
 
 
 # Function to create main menu
