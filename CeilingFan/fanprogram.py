@@ -53,7 +53,7 @@ def main_menu():
 
         fan_id = select_fan_by_id(action_type, len(MY_FANS))
         view_fan_details(fan_id)
-        selection = modify_fan_input(fan_id)
+        selection = modify_fan_input()
 
         if selection == -1:
             return_to_menu()

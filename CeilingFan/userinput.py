@@ -37,7 +37,7 @@ def view_details_input():
 
 
 # Function to collect user input for fan details menu
-def modify_fan_input(fan_id):
+def modify_fan_input():
     choice = ""
     valid_input_type = False
     while not valid_input_type or choice.upper() not in ("Y", "N"):
@@ -48,12 +48,12 @@ def modify_fan_input(fan_id):
         selection = -1
         return selection
     else:
-        selection = modify_fan_choice(fan_id)
+        selection = modify_fan_choice()
         return selection
 
 
 # Function to select modification option
-def modify_fan_choice(fan_id):
+def modify_fan_choice():
     modify_menu = "What would you like to do?:\n1: Change fan status\n" +\
         "2: Change fan speed\n3: Change fan direction\n4: Return to Main Menu"
     print(modify_menu)
@@ -106,11 +106,11 @@ def change_speed_input():
 
 # Function for user input to change direction or not
 def change_direction_input():
-    speed_choice = False
+    valid_input_type = False
     direction_choice = ""
-    while not speed_choice or direction_choice.upper() not in ("Y", "N"):
+    while not valid_input_type or direction_choice.upper() not in ("Y", "N"):
         direction_choice = input("Do you wish to change the direction " +
                                  "setting? (Y / N) ")
-        speed_choice = validate_type_is_str(direction_choice)
+        valid_input_type = validate_type_is_str(direction_choice)
 
     return direction_choice.lower()

@@ -11,7 +11,7 @@ MY_FANS = [
                0, 5, "clockwise"),
     CeilingFan("just another fan", 3, "on", "on", 6, 5,
                3, 2, "counter-clockwise"),
-    CeilingFan("new on fan", 4, "off", "off", 6, 2,
+    CeilingFan("new off fan", 4, "off", "off", 6, 2,
                0, 0, "clockwise")
 ]
 
@@ -75,8 +75,10 @@ def modify_fan_status(fan_id):
     current_speed = fan_details[2]
     fan_name = fan_details[5]
 
-    fan_status, speed = select_new_fan_status(current_fan_status,
-                                              current_speed, fan_name)
+    details = select_new_fan_status(current_fan_status,
+                                    current_speed, fan_name)
+    fan_status = details[0]
+    speed = details[1]
     MY_FANS[fan_id - 1].change_fan_status(fan_status)
     MY_FANS[fan_id - 1].change_speed(speed)
 
@@ -88,11 +90,13 @@ def modify_fan_speed(fan_id):
     current_speed = fan_details[2]
     fan_name = fan_details[5]
 
-    speed = select_new_speed(current_fan_status, current_speed, fan_name)
+    details = select_new_speed(current_fan_status, current_speed, fan_name)
+    fan_status = details[0]
+    speed = details[1]
+
     if speed == 0:
         return
     else:
-        fan_status = "on"
         MY_FANS[fan_id - 1].change_fan_status(fan_status)
         MY_FANS[fan_id - 1].change_speed(speed)
 
@@ -105,12 +109,15 @@ def modify_fan_direction(fan_id):
     current_direction = fan_details[4]
     fan_name = fan_details[5]
 
-    direction, speed = select_new_direction(current_fan_status, current_speed,
-                                            current_direction, fan_name)
+    details = select_new_direction(current_fan_status, current_speed,
+                                   current_direction, fan_name)
+    fan_status = details[0]
+    direction = details[1]
+    speed = details[2]
+
     if direction is None:
         return
     else:
-        fan_status = "on"
         MY_FANS[fan_id - 1].change_fan_status(fan_status)
         MY_FANS[fan_id - 1].change_speed(speed)
         MY_FANS[fan_id - 1].change_direction(direction)

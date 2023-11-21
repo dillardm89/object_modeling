@@ -1,4 +1,5 @@
 from useractions import (change_num_blades, change_num_bulbs)
+from fanprintstatus import get_fan_status_statement
 
 
 # Create a class to model a Ceiling Fan object
@@ -21,15 +22,9 @@ class CeilingFan:
 
     # Return string when print(class object) called
     def __str__(self):
-        if self.fan_status == "off":
-            return f"{self.id}: Fan named '{self.name}' is turned " +\
-                f"{self.fan_status}. It is equipped with {self.blades} blades " +\
-                f"and {self.bulbs} light bulbs."
-        else:
-            return f"{self.id}: Fan named '{self.name}' is turned " +\
-                f"{self.fan_status}. It is equipped with {self.blades} blades " +\
-                f"and {self.bulbs} light bulbs. It is currently moving in " +\
-                f"{self.direction} direction at speed level {self.speed}."
+        statement = get_fan_status_statement(self)
+        print(statement)
+        return ""
 
     # Function to return fan details
     def get_fan_details(self):

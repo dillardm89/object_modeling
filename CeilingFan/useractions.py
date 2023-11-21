@@ -37,7 +37,7 @@ def select_new_fan_status(current_fan_status, current_speed, fan_name):
         new_fan_status = proposed_fan_status
         action_type = f"turned {proposed_fan_status}"
         return_success_msg(fan_name, action_type)
-        return new_fan_status, proposed_speed
+        return (new_fan_status, proposed_speed)
     else:
         print(f"Fan named {fan_name} remains turned {current_fan_status}.")
         return current_fan_status, current_speed
@@ -46,20 +46,22 @@ def select_new_fan_status(current_fan_status, current_speed, fan_name):
 # Function for user to select new speed
 def select_new_speed(current_fan_status, current_speed, fan_name):
     change_type = "speed"
-    fan_status, speed = change_fan_status_input(current_fan_status,
-                                                current_speed, fan_name,
-                                                change_type)
+    details = change_fan_status_input(current_fan_status,
+                                      current_speed, fan_name,
+                                      change_type)
+    fan_status = details[0]
+    speed = details[1]
 
     if fan_status == "off":
-        return current_speed
+        return current_fan_status, current_speed
 
-    print(f"The fan is currently at speed level {current_speed}.")
+    print(f"The fan is currently at speed level {speed}.")
     speed_choice = change_speed_input()
 
     if speed_choice == "N":
         print(f"The fan named {fan_name} remains " +
-              f"at speed level {current_speed}.")
-        return current_speed
+              f"at speed level {speed}.")
+        return fan_status, speed
 
     new_speed = -1
     speed_input_type = False
@@ -68,26 +70,28 @@ def select_new_speed(current_fan_status, current_speed, fan_name):
         new_speed = input("Enter the new speed setting: (1-3) ")
         speed_input_type = validate_type_is_int(new_speed)
 
-    if current_speed == int(new_speed):
-        print(f"The fan is already set to speed level {current_speed}.")
-        return current_speed
+    if speed == int(new_speed):
+        print(f"The fan is already set to speed level {speed}.")
+        return fan_status, speed
     else:
         new_speed = int(new_speed)
         action_type = f"changed to speed level {new_speed}"
         return_success_msg(fan_name, action_type)
-        return new_speed
+        return fan_status, new_speed
 
 
 # Function for user to select new direction
 def select_new_direction(current_fan_status, current_speed, current_direction,
                          fan_name):
     change_type = "direction"
-    fan_status, speed = change_fan_status_input(current_fan_status,
-                                                current_speed, fan_name,
-                                                change_type)
+    details = change_fan_status_input(current_fan_status,
+                                      current_speed, fan_name,
+                                      change_type)
+    fan_status = details[0]
+    speed = details[1]
 
     if fan_status == "off":
-        return current_direction, current_speed
+        return current_fan_status, current_direction, current_speed
 
     print(f"The fan is currently set to {current_direction} direction.")
     if (current_direction == "clockwise"):
@@ -100,7 +104,7 @@ def select_new_direction(current_fan_status, current_speed, current_direction,
     if direction_choice == "N":
         print(f"The fan named {fan_name} remains at direction " +
               f"setting: {current_direction}.")
-        return current_direction, speed
+        return fan_status, current_direction, speed
 
     new_direction = ""
     direction_input_type = False
@@ -112,12 +116,12 @@ def select_new_direction(current_fan_status, current_speed, current_direction,
 
     if current_direction == new_direction.lower():
         print(f"The fan is already set to {current_direction} direction.")
-        return current_direction, speed
+        return fan_status, current_direction, speed
     else:
         new_direction = new_direction.lower()
         action_type = f"changed to direction setting: {new_direction}"
         return_success_msg(fan_name, action_type)
-        return new_direction, speed
+        return fan_status, new_direction, speed
 
 
 # Function for user to set number of fan blades
