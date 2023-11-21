@@ -1,37 +1,35 @@
-from useractions import (change_num_blades, change_num_bulbs)
+from usernewfaninput import (change_num_blades, change_num_bulbs)
+from fanprintstatus import get_fan_status_statement
 
 
 # Create a class to model a Ceiling Fan object
 class CeilingFan:
-    def __init__(
-        self, name, id=None, status="off", blades=None,
-            bulbs=None, speed=1, direction="counter-clockwise"):
+    def __init__(self, name, id=None, fan_status="off",
+                 light_status="off", blades=None, bulbs=None,
+                 speed=0, light_setting=0, direction="counter-clockwise"):
 
         self.name = name
         self.id = id
-        self.status = status.lower()
+        self.fan_status = fan_status.lower()
+        self.light_status = light_status.lower()
         self.blades = blades
         self.bulbs = bulbs
         self.speed = speed
+        self.light_setting = light_setting
         self.direction = direction.lower()
         self.set_blades()
         self.set_bulbs()
 
     # Return string when print(class object) called
     def __str__(self):
-        if self.status == "off":
-            return f"{self.id}: Fan named '{self.name}' is turned " +\
-                f"{self.status}. It is equipped with {self.blades} blades " +\
-                f"and {self.bulbs} light bulbs."
-        else:
-            return f"{self.id}: Fan named '{self.name}' is turned " +\
-                f"{self.status}. It is equipped with {self.blades} blades " +\
-                f"and {self.bulbs} light bulbs. It is currently moving in " +\
-                f"{self.direction} direction at speed level {self.speed}."
+        statement = get_fan_status_statement(self)
+        print(statement)
+        return ""
 
     # Function to return fan details
     def get_fan_details(self):
-        details = (self.status, self.speed, self.direction, self.name)
+        details = (self.fan_status, self.light_status, self.speed,
+                   self.light_setting, self.direction, self.name)
         return details
 
     # Function to set number of fan blades
@@ -49,12 +47,20 @@ class CeilingFan:
             return
 
     # Function to change fan status (on/off)
-    def change_status(self, status):
-        self.status = status
+    def change_fan_status(self, fan_status):
+        self.fan_status = fan_status
+
+    # Function to change light status (on/off)
+    def change_light_status(self, light_status):
+        self.light_status = light_status
 
     # Function to change fan speed setting (1-3)
     def change_speed(self, speed):
         self.speed = speed
+
+    # Function to change fan light setting (1-5)
+    def change_light_setting(self, light_setting):
+        self.light_setting = light_setting
 
     # Function to change fan direction setting (clockwise / counter-clockwise)
     def change_direction(self, direction):
