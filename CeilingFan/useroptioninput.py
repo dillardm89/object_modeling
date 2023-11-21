@@ -1,5 +1,4 @@
 from validation import (validate_type_is_int, validate_type_is_str)
-from usermenuinput import modify_fan_menu
 
 
 # Function to collect user input for view fans menu
@@ -38,7 +37,7 @@ def modify_fan_input():
         selection = -1
         return selection
     else:
-        selection = modify_fan_menu()
+        selection = 1
         return selection
 
 
@@ -71,7 +70,8 @@ def new_direction_setting_input():
     new_direction_choice = ""
     direction_input_type = False
     while (not direction_input_type or
-           new_direction_choice.lower() not in ("clockwise", "counter-clockwise")):
+           new_direction_choice.lower() not in ("clockwise",
+                                                "counter-clockwise")):
         new_direction_choice = input("Enter the new direction setting: " +
                                      "(clockwise or counter-clockwise) ")
         direction_input_type = validate_type_is_str(new_direction_choice)
