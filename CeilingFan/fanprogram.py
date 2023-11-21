@@ -13,7 +13,7 @@ from userinput import (menu_input, modify_fan_choice,
 def main_menu():
     menu_text = "What would you like to do?:\n1: Create new fan\n2: Delete " +\
         "existing fan\n3: View list of fans\n4: View specific fan details\n" +\
-        "5: Modify fan (change status, speed, direction)\n6: Exit program"
+        "5: Modify fan settings\n6: Exit program"
     print(menu_text)
     selection = menu_input()
 
@@ -69,7 +69,7 @@ def main_menu():
 
         action_type = "modify"
         fan_id = select_fan_by_id(action_type, len(MY_FANS))
-        selection = modify_fan_choice(fan_id)
+        selection = modify_fan_choice()
 
         if selection == -1:
             return_to_menu()

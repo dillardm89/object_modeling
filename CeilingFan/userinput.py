@@ -55,19 +55,21 @@ def modify_fan_input():
 # Function to select modification option
 def modify_fan_choice():
     modify_menu = "What would you like to do?:\n1: Change fan status\n" +\
-        "2: Change fan speed\n3: Change fan direction\n4: Return to Main Menu"
+        "2: Change fan speed\n3: Change fan direction\n" +\
+        "4: Change light status\n5: Change light setting\n" +\
+        "6: Return to Main Menu"
     print(modify_menu)
 
     selection = -1
     valid_input_type = False
-    while not valid_input_type or int(selection) < 1 or int(selection) > 4:
+    while not valid_input_type or int(selection) < 1 or int(selection) > 6:
         selection = input("Enter the operation number: ")
         valid_input_type = validate_type_is_int(selection)
 
     return int(selection)
 
 
-# Function for user input to change status before changing speed/direction
+# Function for user input to change fan status before changing speed/direction
 def change_fan_status_input(current_fan_status, current_speed,
                             fan_name, change_type):
     if current_fan_status == "on":
@@ -92,25 +94,38 @@ def change_fan_status_input(current_fan_status, current_speed,
         return current_fan_status, current_speed
 
 
+# Function for user input to change light status before changing setting
+def change_light_status_input(current_light_status,
+                              current_light_setting, fan_name):
+    if current_light_status == "on":
+        return current_light_status, current_light_setting
+
+    print("The light is currently turned off. " +
+          "It must be on to change the setting.")
+
+    light_status_choice = ""
+    valid_input_type = False
+    while not valid_input_type or light_status_choice.upper() not in ("Y", "N"):
+        light_status_choice = input("Do you wish to turn the light on? (Y / N) ")
+        valid_input_type = validate_type_is_str(light_status_choice)
+
+    if (light_status_choice.upper() == "Y"):
+        light_status = "on"
+        new_light_setting = 1
+        print(f"The light for fan named {fan_name} is now turned on")
+        return light_status, new_light_setting
+    else:
+        print(f"The light for fan named {fan_name} will remain off.")
+        return current_light_status, current_light_status
+
+
 # Function for user input to change speed or not
-def change_speed_input():
+def change_setting_input(setting_type):
     valid_input_type = False
-    speed_choice = ""
-    while not valid_input_type or speed_choice.upper() not in ("Y", "N"):
-        speed_choice = input("Do you wish to change the speed " +
+    choice = ""
+    while not valid_input_type or choice.upper() not in ("Y", "N"):
+        choice = input(f"Do you wish to change the {setting_type} " +
                              "setting? (Y / N) ")
-        valid_input_type = validate_type_is_str(speed_choice)
+        valid_input_type = validate_type_is_str(choice)
 
-    return speed_choice.upper()
-
-
-# Function for user input to change direction or not
-def change_direction_input():
-    valid_input_type = False
-    direction_choice = ""
-    while not valid_input_type or direction_choice.upper() not in ("Y", "N"):
-        direction_choice = input("Do you wish to change the direction " +
-                                 "setting? (Y / N) ")
-        valid_input_type = validate_type_is_str(direction_choice)
-
-    return direction_choice.lower()
+    return choice.upper()

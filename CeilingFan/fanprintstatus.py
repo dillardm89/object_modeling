@@ -1,7 +1,7 @@
 # Function to return fan status statement for printing
 def get_fan_status_statement(fan):
-    statement = f"{fan.id}: Fan named '{fan.name}' is turned {fan.fan_status}." +\
-                f"The light is turned {fan.light_status}"
+    statement = f"{fan.id}: Fan named '{fan.name}' is turned " +\
+        f"{fan.fan_status}. The light is turned {fan.light_status}"
 
     if fan.fan_status == "off" and fan.light_status == "off":
         statement = statement + ". It is equipped with " +\

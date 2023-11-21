@@ -1,6 +1,7 @@
 from ceilingfan import CeilingFan
 from useractions import (select_new_fan_status, select_new_direction,
-                         select_new_speed)
+                         select_new_speed, select_new_light_status,
+                         select_new_light_setting)
 
 
 # Create list for class objects with example fans
@@ -64,8 +65,14 @@ def modify_fan(selection, fan_id):
         modify_fan_status(fan_id)
     elif selection == 2:
         modify_fan_speed(fan_id)
-    else:
+    elif selection == 3:
         modify_fan_direction(fan_id)
+    elif selection == 4:
+        modify_light_status(fan_id)
+    elif selection == 5:
+        modify_light_setting(fan_id)
+    else:
+        return
 
 
 # Function to modify fan status
@@ -81,6 +88,40 @@ def modify_fan_status(fan_id):
     speed = details[1]
     MY_FANS[fan_id - 1].change_fan_status(fan_status)
     MY_FANS[fan_id - 1].change_speed(speed)
+
+
+# Function to modify light status
+def modify_light_status(fan_id):
+    fan_details = MY_FANS[fan_id - 1].get_fan_details()
+    current_light_status = fan_details[1]
+    current_light_setting = fan_details[3]
+    fan_name = fan_details[5]
+
+    details = select_new_light_status(current_light_status,
+                                      current_light_setting, fan_name)
+    light_status = details[0]
+    light_setting = details[1]
+    MY_FANS[fan_id - 1].change_light_status(light_status)
+    MY_FANS[fan_id - 1].change_light_setting(light_setting)
+
+
+# Function to modify light setting
+def modify_light_setting(fan_id):
+    fan_details = MY_FANS[fan_id - 1].get_fan_details()
+    current_light_status = fan_details[1]
+    current_light_setting = fan_details[3]
+    fan_name = fan_details[5]
+
+    details = select_new_light_setting(current_light_status,
+                                       current_light_setting, fan_name)
+    light_status = details[0]
+    light_setting = details[1]
+
+    if light_setting == 0:
+        return
+    else:
+        MY_FANS[fan_id - 1].change_light_status(light_status)
+        MY_FANS[fan_id - 1].change_light_setting(light_setting)
 
 
 # Function to modify fan speed
