@@ -6,7 +6,7 @@ from fanfunctions import (create_fan, delete_fan, update_fan_id,
 from usermessage import return_success_msg
 from usernewfaninput import user_name_fan
 from usermenuinput import (menu_input, modify_fan_menu)
-from useroptioninput import (view_details_input, modify_fan_input)
+from useroptioninput import (view_details_options, modify_fan_options)
 from userselectactions import select_fan_by_id
 
 
@@ -41,7 +41,7 @@ def main_menu():
         return_success_msg(mode, fan_name_delete, action_type)
         return_to_menu()
 
-    # View list, view details, or modify
+    # View list, view details, modify
     elif selection in (3, 4, 5):
         num_fans = create_fan_list()
         if num_fans < 1:
@@ -49,7 +49,7 @@ def main_menu():
 
         # start point for option 3 = view list all fans
         if selection == 3:
-            view_details_choice = view_details_input()
+            view_details_choice = view_details_options()
             if view_details_choice == "N":
                 return_to_menu()
 
@@ -63,7 +63,7 @@ def main_menu():
         # start point for option 4 = view details specific fan
         if selection in (3, 4):
             view_fan_details(fan_id)
-            modify_fan_decision = modify_fan_input()
+            modify_fan_decision = modify_fan_options()
 
             if modify_fan_decision == -1:
                 return_to_menu()

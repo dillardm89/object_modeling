@@ -1,7 +1,7 @@
 from validation import validate_type_is_int
-from useroptioninput import (change_setting_input, new_light_setting_input,
-                             new_speed_setting_input,
-                             new_direction_setting_input)
+from useroptioninput import (change_setting_options, new_light_setting_options,
+                             new_speed_setting_options,
+                             new_direction_setting_options)
 from userstatusinput import (change_fan_status_input, change_status_input,
                              change_light_status_input)
 from usermessage import return_success_msg
@@ -83,14 +83,14 @@ def select_new_light_setting(current_light_status,
 
     print(f"The light is currently at setting level {light_setting}.")
     setting_type = "light"
-    setting_choice = change_setting_input(setting_type)
+    setting_choice = change_setting_options(setting_type)
 
     if setting_choice == "N":
         print(f"The light for fan named {fan_name} remains " +
               f"at setting level {light_setting}.")
         return light_status, light_setting
 
-    light_setting_choice = new_light_setting_input()
+    light_setting_choice = new_light_setting_options()
     if light_setting == light_setting_choice:
         print(f"The light is already set to evel {light_setting}.")
         return light_status, light_setting
@@ -116,14 +116,14 @@ def select_new_speed(current_fan_status, current_speed, fan_name):
 
     print(f"The fan is currently at speed level {speed}.")
     setting_type = "speed"
-    speed_choice = change_setting_input(setting_type)
+    speed_choice = change_setting_options(setting_type)
 
     if speed_choice == "N":
         print(f"The fan named {fan_name} remains " +
               f"at speed level {speed}.")
         return fan_status, speed
 
-    new_speed_choice = new_speed_setting_input()
+    new_speed_choice = new_speed_setting_options()
     if speed == int(new_speed_choice):
         print(f"The fan is already set to speed level {speed}.")
         return fan_status, speed
@@ -155,14 +155,14 @@ def select_new_direction(current_fan_status, current_speed, current_direction,
         print("This is the ideal summer direction setting.")
 
     setting_type = "direciton"
-    direction_choice = change_setting_input(setting_type)
+    direction_choice = change_setting_options(setting_type)
 
     if direction_choice == "N":
         print(f"The fan named {fan_name} remains at direction " +
               f"setting: {current_direction}.")
         return fan_status, current_direction, speed
 
-    new_direction_choice = new_direction_setting_input()
+    new_direction_choice = new_direction_setting_options()
     if current_direction == new_direction_choice:
         print(f"The fan is already set to {current_direction} direction.")
         return fan_status, current_direction, speed
