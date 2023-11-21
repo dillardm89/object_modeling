@@ -1,15 +1,18 @@
 from ceilingfan import CeilingFan
-from useractions import (select_new_status, select_new_direction,
+from useractions import (select_new_fan_status, select_new_direction,
                          select_new_speed)
 
 
 # Create list for class objects with example fans
 MY_FANS = [
-    CeilingFan(
-        "example fan 123", 1, "on", 4, 3, 2, "clockwise"),
-    CeilingFan("my bedroom fan", 2, "off", 5, 4),
-    CeilingFan(
-        "just another fan", 3, "on", 6, 5, 3, "counter-clockwise"),
+    CeilingFan("example fan 123", 1, "on",
+               "off", 4, 3, 2, 0, "clockwise"),
+    CeilingFan("my bedroom fan", 2, "off", "on", 5, 4,
+               0, 5, "clockwise"),
+    CeilingFan("just another fan", 3, "on", "on", 6, 5,
+               3, 2, "counter-clockwise"),
+    CeilingFan("new on fan", 4, "off", "off", 6, 2,
+               0, 0, "clockwise")
 ]
 
 
@@ -68,41 +71,46 @@ def modify_fan(selection, fan_id):
 # Function to modify fan status
 def modify_fan_status(fan_id):
     fan_details = MY_FANS[fan_id - 1].get_fan_details()
-    current_status = fan_details[0]
-    fan_name = fan_details[3]
+    current_fan_status = fan_details[0]
+    current_speed = fan_details[2]
+    fan_name = fan_details[5]
 
-    status = select_new_status(current_status, fan_name)
-    MY_FANS[fan_id - 1].change_status(status)
+    fan_status, speed = select_new_fan_status(current_fan_status,
+                                              current_speed, fan_name)
+    MY_FANS[fan_id - 1].change_fan_status(fan_status)
+    MY_FANS[fan_id - 1].change_speed(speed)
 
 
 # Function to modify fan speed
 def modify_fan_speed(fan_id):
     fan_details = MY_FANS[fan_id - 1].get_fan_details()
-    current_status = fan_details[0]
-    current_speed = fan_details[1]
-    fan_name = fan_details[3]
+    current_fan_status = fan_details[0]
+    current_speed = fan_details[2]
+    fan_name = fan_details[5]
 
-    speed = select_new_speed(current_status, current_speed, fan_name)
+    speed = select_new_speed(current_fan_status, current_speed, fan_name)
     if speed == 0:
         return
     else:
-        status = "on"
-        MY_FANS[fan_id - 1].change_status(status)
+        fan_status = "on"
+        MY_FANS[fan_id - 1].change_fan_status(fan_status)
         MY_FANS[fan_id - 1].change_speed(speed)
 
 
 # Function to modify fan direction
 def modify_fan_direction(fan_id):
-    selected_fan_details = MY_FANS[fan_id - 1].get_fan_details()
-    current_status = selected_fan_details[0]
-    current_direction = selected_fan_details[2]
-    fan_name = selected_fan_details[3]
+    fan_details = MY_FANS[fan_id - 1].get_fan_details()
+    current_fan_status = fan_details[0]
+    current_speed = fan_details[2]
+    current_direction = fan_details[4]
+    fan_name = fan_details[5]
 
-    direction = select_new_direction(current_status,
-                                     current_direction, fan_name)
+    direction, speed = select_new_direction(current_fan_status, current_speed,
+                                            current_direction, fan_name)
     if direction is None:
         return
     else:
-        status = "on"
-        MY_FANS[fan_id - 1].change_status(status)
+        fan_status = "on"
+        MY_FANS[fan_id - 1].change_fan_status(fan_status)
+        MY_FANS[fan_id - 1].change_speed(speed)
         MY_FANS[fan_id - 1].change_direction(direction)

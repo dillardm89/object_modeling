@@ -68,46 +68,49 @@ def modify_fan_choice(fan_id):
 
 
 # Function for user input to change status before changing speed/direction
-def change_status_input(current_status, fan_name, change_type):
-    if current_status == "on":
-        return current_status
+def change_fan_status_input(current_fan_status, current_speed,
+                            fan_name, change_type):
+    if current_fan_status == "on":
+        return current_fan_status, current_speed
 
     print("The fan is currently turned off. " +
           f"It must be on to change the {change_type}.")
 
-    status_choice = ""
+    fan_status_choice = ""
     valid_input_type = False
-    while not valid_input_type or status_choice.upper() not in ("Y", "N"):
-        status_choice = input("Do you wish to turn the fan on? (Y / N) ")
-        valid_input_type = validate_type_is_str(status_choice)
+    while not valid_input_type or fan_status_choice.upper() not in ("Y", "N"):
+        fan_status_choice = input("Do you wish to turn the fan on? (Y / N) ")
+        valid_input_type = validate_type_is_str(fan_status_choice)
 
-    if (status_choice.upper() == "Y"):
-        status = "on"
+    if (fan_status_choice.upper() == "Y"):
+        fan_status = "on"
+        new_speed = 1
         print(f"The fan named {fan_name} is now turned on")
-        return status
+        return fan_status, new_speed
     else:
         print(f"The fan named {fan_name} will remain off.")
-        return current_status
+        return current_fan_status, current_speed
 
 
 # Function for user input to change speed or not
 def change_speed_input():
-    choice_input_type = False
-    choice = ""
-    while not choice_input_type or choice.upper() not in ("Y", "N"):
-        choice = input("Do you wish to change the speed setting? (Y / N) ")
-        choice_input_type = validate_type_is_str(choice)
+    valid_input_type = False
+    speed_choice = ""
+    while not valid_input_type or speed_choice.upper() not in ("Y", "N"):
+        speed_choice = input("Do you wish to change the speed " +
+                             "setting? (Y / N) ")
+        valid_input_type = validate_type_is_str(speed_choice)
 
-    return choice.upper()
+    return speed_choice.upper()
 
 
 # Function for user input to change direction or not
 def change_direction_input():
-    choice_input_type = False
-    choice = ""
-    while not choice_input_type or choice.upper() not in ("Y", "N"):
-        choice = input("Do you wish to change the direction " +
-                       "setting? (Y / N) ")
-        choice_input_type = validate_type_is_str(choice)
+    speed_choice = False
+    direction_choice = ""
+    while not speed_choice or direction_choice.upper() not in ("Y", "N"):
+        direction_choice = input("Do you wish to change the direction " +
+                                 "setting? (Y / N) ")
+        speed_choice = validate_type_is_str(direction_choice)
 
-    return choice.upper()
+    return direction_choice.lower()

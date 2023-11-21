@@ -1,5 +1,5 @@
 from validation import (validate_type_is_int, validate_type_is_str)
-from userinput import (change_status_input, change_direction_input,
+from userinput import (change_fan_status_input, change_direction_input,
                        change_speed_input)
 from usermessage import return_success_msg
 
@@ -16,49 +16,52 @@ def user_name_fan():
 
 
 # Function for user to select new status
-def select_new_status(current_status, fan_name):
-    print(f"The fan is currently turned {current_status}.")
+def select_new_fan_status(current_fan_status, current_speed, fan_name):
+    print(f"The fan is currently turned {current_fan_status}.")
 
-    if current_status == "off":
-        proposed_staus = "on"
+    if current_fan_status == "off":
+        proposed_fan_status = "on"
+        proposed_speed = 1
     else:
-        proposed_staus = "off"
+        proposed_fan_status = "off"
+        proposed_speed = 0
 
-    choice = ""
+    status_choice = ""
     valid_input_type = False
-    while not valid_input_type or choice.upper() not in ("Y", "N"):
-        choice = input("Do you wish to turn the fan " +
-                       f"{proposed_staus}? (Y / N) ")
-        valid_input_type = validate_type_is_str(choice)
+    while not valid_input_type or status_choice.upper() not in ("Y", "N"):
+        status_choice = input("Do you wish to turn the fan " +
+                              f"{proposed_fan_status}? (Y / N) ")
+        valid_input_type = validate_type_is_str(status_choice)
 
-    if choice.upper() == "Y":
-        new_status = proposed_staus
-        action_type = f"turned {proposed_staus}"
+    if status_choice.upper() == "Y":
+        new_fan_status = proposed_fan_status
+        action_type = f"turned {proposed_fan_status}"
         return_success_msg(fan_name, action_type)
-        return new_status
+        return new_fan_status, proposed_speed
     else:
-        print(f"Fan named {fan_name} remains turned {current_status}.")
-        return current_status
+        print(f"Fan named {fan_name} remains turned {current_fan_status}.")
+        return current_fan_status, current_speed
 
 
 # Function for user to select new speed
-def select_new_speed(current_status, current_speed, fan_name):
+def select_new_speed(current_fan_status, current_speed, fan_name):
     change_type = "speed"
-    status = change_status_input(current_status, fan_name, change_type)
+    fan_status, speed = change_fan_status_input(current_fan_status,
+                                                current_speed, fan_name,
+                                                change_type)
 
-    if status == "off":
-        speed = 0
-        return speed
+    if fan_status == "off":
+        return current_speed
 
     print(f"The fan is currently at speed level {current_speed}.")
-    choice = change_speed_input()
+    speed_choice = change_speed_input()
 
-    if choice == "N":
+    if speed_choice == "N":
         print(f"The fan named {fan_name} remains " +
               f"at speed level {current_speed}.")
         return current_speed
 
-    new_speed = 0
+    new_speed = -1
     speed_input_type = False
     while (speed_input_type is not True or
             int(new_speed) < 1 or int(new_speed) > 3):
@@ -76,13 +79,15 @@ def select_new_speed(current_status, current_speed, fan_name):
 
 
 # Function for user to select new direction
-def select_new_direction(current_status, current_direction, fan_name):
+def select_new_direction(current_fan_status, current_speed, current_direction,
+                         fan_name):
     change_type = "direction"
-    status = change_status_input(current_status, fan_name, change_type)
+    fan_status, speed = change_fan_status_input(current_fan_status,
+                                                current_speed, fan_name,
+                                                change_type)
 
-    if status == "off":
-        direction = None
-        return direction
+    if fan_status == "off":
+        return current_direction, current_speed
 
     print(f"The fan is currently set to {current_direction} direction.")
     if (current_direction == "clockwise"):
@@ -90,12 +95,12 @@ def select_new_direction(current_status, current_direction, fan_name):
     else:
         print("This is the ideal summer direction setting.")
 
-    choice = change_direction_input()
+    direction_choice = change_direction_input()
 
-    if choice == "N":
+    if direction_choice == "N":
         print(f"The fan named {fan_name} remains at direction " +
               f"setting: {current_direction}.")
-        return current_direction
+        return current_direction, speed
 
     new_direction = ""
     direction_input_type = False
@@ -107,12 +112,12 @@ def select_new_direction(current_status, current_direction, fan_name):
 
     if current_direction == new_direction.lower():
         print(f"The fan is already set to {current_direction} direction.")
-        return current_direction
+        return current_direction, speed
     else:
         new_direction = new_direction.lower()
         action_type = f"changed to direction setting: {new_direction}"
         return_success_msg(fan_name, action_type)
-        return new_direction
+        return new_direction, speed
 
 
 # Function for user to set number of fan blades
